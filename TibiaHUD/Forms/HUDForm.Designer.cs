@@ -46,7 +46,6 @@
 			this.ShowInTaskbar = false;
 			this.Text = "HUDForm";
 			this.TopMost = true;
-			this.Shown += new System.EventHandler(this.HUDForm_Shown);
 			this.ResumeLayout(false);
 
 		}

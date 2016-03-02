@@ -9,6 +9,10 @@ namespace TibiaHUD.Forms
 {
 	public partial class HUDForm : Form
 	{
+		private const int WS_EX_Transparent = 0x20;
+		private const int WS_EX_Layered = 0x80000;
+		private const int WS_EX_Composited = 0x02000000;
+
 		private TibiaClient tibia;
 		private CurveBar hpManaBar;
 		
@@ -20,19 +24,9 @@ namespace TibiaHUD.Forms
 			public int Right;
 			public int Bottom;
 		}
-
-		private const int GWL_ExStyle = -20;
-		private const int WS_EX_Transparent = 0x20;
-		private const int WS_EX_Layered = 0x80000;
-
+		
 		[DllImport("user32.dll", SetLastError = true)]
 		private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
-
-		[DllImport("user32.dll")]
-		private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-
-		[DllImport("user32.dll")]
-		private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
 		[DllImport("user32.dll")]
 		private static extern IntPtr GetForegroundWindow();
@@ -53,11 +47,12 @@ namespace TibiaHUD.Forms
 			updateTimer.Start();
 		}
 
-		private void HUDForm_Shown(object sender, EventArgs e) {
-			// This makes the form click-through (does not respond to any input events) - the events are instead passed to the Tibia client underneath
-			int wl = GetWindowLong(this.Handle, GWL_ExStyle);
-			wl = wl | WS_EX_Transparent | WS_EX_Layered;
-			SetWindowLong(this.Handle, GWL_ExStyle, wl);
+		protected override CreateParams CreateParams {
+			get {
+				CreateParams cp = base.CreateParams;
+				cp.ExStyle |= WS_EX_Composited | WS_EX_Transparent | WS_EX_Layered;
+				return cp;
+			}
 		}
 
 		private void updateTimer_Tick(object sender, EventArgs e) {
