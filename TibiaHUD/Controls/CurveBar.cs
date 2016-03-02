@@ -42,11 +42,11 @@ namespace TibiaHUD.Controls
 			rect.X += 10;
 			
 			Pen pen = new Pen(Color.Black);
-			pen.Width = 16;
+			pen.Width = 22;
 			e.Graphics.DrawArc(pen, rect, 135, 90);
 			e.Graphics.DrawArc(pen, rect, 45, -90);
 
-			pen.Width = 14;
+			pen.Width = 20;
 
 			int red = (int)(255 - (health * 255));
 			int green = (int)(health * 255);
